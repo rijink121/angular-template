@@ -67,7 +67,6 @@ export class LoginComponent implements OnInit {
     this.auth.password = this.authService.hash(this.auth.password);
     this.auth.info = this.deviceInfo;
     const { data, error, message } = await this.apiService.authenticate(this.auth);
-    console.log({ data, error, message });
     this._fuseProgressBarService.hide();
     if (!!error) {
       this._snackBar.open(message, 'Ok', {

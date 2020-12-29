@@ -26,7 +26,7 @@
       <div class="search-wrapper mx-32 mx-md-0">
         <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
           <mat-icon>search</mat-icon>
-          <input #filter placeholder="Search for a member">
+          <input #search placeholder="Search for a member">
         </div>
       </div>
       <!-- / SEARCH -->
@@ -49,8 +49,8 @@
         <!-- ID Column -->
         <ng-container matColumnDef="id">
           <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
-          <mat-cell *matCellDef="let member">
-            <p class="text-truncate">{{member.id}}</p>
+          <mat-cell *matCellDef="let member; let i = index">
+            <p class="text-truncate">{{(paginator.pageIndex * paginator.pageSize) + i + 1}}</p>
           </mat-cell>
         </ng-container>
 
@@ -58,9 +58,8 @@
         <ng-container matColumnDef="image">
           <mat-header-cell *matHeaderCellDef></mat-header-cell>
           <mat-cell *matCellDef="let member">
-            <img class="member-image" *ngIf="member.featuredImageId" [alt]="member.name"
-              [src]="member.images[member.featuredImageId].url" />
-            <img *ngIf="!member.featuredImageId" [src]="'assets/images/ecommerce/member-image-placeholder.png'">
+            <img class="member-image" *ngIf="member.image" [alt]="member.name" [src]="member.image" />
+            <img class="member-image" *ngIf="!member.image" [src]="'assets/images/avatars/alice.jpg'">
           </mat-cell>
         </ng-container>
 
@@ -68,42 +67,39 @@
         <ng-container matColumnDef="name">
           <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
           <mat-cell *matCellDef="let member">
-            <p class="text-truncate">{{member.name}}</p>
+            <p class="text-truncate">{{member.full_name}}</p>
           </mat-cell>
         </ng-container>
 
-        <!-- Category Column -->
-        <ng-container matColumnDef="category">
-          <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>Category</mat-header-cell>
-          <mat-cell *matCellDef="let member" fxHide fxShow.gt-md>
-            <p class="category text-truncate">
-              {{member.categories[0]}}
-            </p>
+        <!-- Age Column -->
+        <ng-container matColumnDef="dob">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Age</mat-header-cell>
+          <mat-cell *matCellDef="let member">
+            <p class="text-truncate">{{member.age}}</p>
           </mat-cell>
         </ng-container>
 
-        <!-- Price Column -->
-        <ng-container matColumnDef="price">
-          <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Price</mat-header-cell>
-          <mat-cell *matCellDef="let member" fxHide fxShow.gt-xs>
-            <p class="price text-truncate">
-              {{member.priceTaxIncl | currency:'USD':'symbol'}}
-            </p>
+        <!-- Gender Column -->
+        <ng-container matColumnDef="gender">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Gender</mat-header-cell>
+          <mat-cell *matCellDef="let member">
+            <p class="text-truncate">{{member.gender}}</p>
           </mat-cell>
         </ng-container>
 
-        <!-- Quantity Column -->
-        <ng-container matColumnDef="quantity">
-          <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Quantity</mat-header-cell>
-          <mat-cell *matCellDef="let member" fxHide fxShow.gt-sm>
+        <!-- Email Column -->
+        <ng-container matColumnDef="email">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
+          <mat-cell *matCellDef="let member">
+            <p class="text-truncate">{{member.email}}</p>
+          </mat-cell>
+        </ng-container>
 
-            <span class="quantity-indicator text-truncate"
-              [ngClass]="{'red-500':member.quantity <= 5, 'amber-500':member.quantity > 5 && member.quantity <= 25,'green-600':member.quantity > 25}">
-            </span>
-            <span>
-              {{member.quantity}}
-            </span>
-
+        <!-- Phone Column -->
+        <ng-container matColumnDef="phone">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Phone</mat-header-cell>
+          <mat-cell *matCellDef="let member">
+            <p class="text-truncate">{{member.phone}}</p>
           </mat-cell>
         </ng-container>
 
@@ -119,14 +115,12 @@
         <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
 
         <mat-row *matRowDef="let member; columns: displayedColumns;" class="member" matRipple
-          [routerLink]="'/apps/e-commerce/members/'+member.id+'/'+member.handle">
+          [routerLink]="'/apps/members/'+member.id">
         </mat-row>
 
       </mat-table>
 
-      <mat-paginator #paginator [length]="dataSource.length" [pageIndex]="0" [pageSize]="10"
-        [pageSizeOptions]="[5, 10, 25, 100]">
-      </mat-paginator>
+      <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
 
     </div>
     <!-- / CONTENT CARD -->

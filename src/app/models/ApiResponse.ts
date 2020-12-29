@@ -4,7 +4,6 @@ import { Cms } from './Cms';
 import { Template } from './Template';
 import { State } from './State';
 
-
 export interface ApiResponse {
   data?: any;
   error?: any;
