@@ -14,7 +14,8 @@ export const FUSE_CONFIG = new InjectionToken('fuseCustomConfig');
 export class FuseConfigService
 {
     // Private
-    private _configSubject: BehaviorSubject<any>;
+    // Private
+    private _configSubject!: BehaviorSubject<any>;
     private readonly _defaultConfig: any;
 
     /**
@@ -27,7 +28,7 @@ export class FuseConfigService
     constructor(
         private _platform: Platform,
         private _router: Router,
-        @Inject(FUSE_CONFIG) private _config
+        @Inject(FUSE_CONFIG) private _config: any
     )
     {
         // Set the default config from the user provided config (from forRoot)
@@ -122,7 +123,7 @@ export class FuseConfigService
      * @param value
      * @param {{emitEvent: boolean}} opts
      */
-    setConfig(value, opts = {emitEvent: true}): void
+    setConfig(value: any, opts = {emitEvent: true}): void
     {
         // Get the value from the behavior subject
         let config = this._configSubject.getValue();

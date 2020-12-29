@@ -121,6 +121,8 @@ $typography: mat-typography-config(
 
 @import "src/app/main/ui/cards/cards.theme"; */
 
+@import "src/app/modules/login/login.theme";
+
 // Define a mixin for easier access
 @mixin components-theme($theme) {
 
@@ -170,6 +172,8 @@ $typography: mat-typography-config(
 
     // UI
     @include ui-cards-theme($theme); */
+
+    @include login-theme($theme);
 }
 
 // -----------------------------------------------------------------------------------------------------
