@@ -13,6 +13,26 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { fuseConfig } from './fuse-config';
 import { LayoutModule } from './layout/layout.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { ApiService } from './services/api.service';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { AuthService } from './services/auth.service';
+import { DataService } from './services/data.service';
+import { HttpService } from './services/http.service';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
+const DATE_FORMAT = {
+  parse: {
+    dateInput: 'LL',
+  },
+  display: {
+    dateInput: 'MM/DD/YYYY',
+    monthYearLabel: 'YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'YYYY',
+  },
+};
 
 @NgModule({
   declarations: [
@@ -26,7 +46,9 @@ import { TranslateModule } from '@ngx-translate/core';
     // Material
     MatButtonModule,
     MatIconModule,
-
+    MatMomentDateModule,
+    MatDialogModule,
+    MatSnackBarModule,
     // Fuse modules
     FuseModule.forRoot(fuseConfig),
     FuseProgressBarModule,
@@ -37,7 +59,7 @@ import { TranslateModule } from '@ngx-translate/core';
     LayoutModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [ApiService, AuthService, DataService, HttpService, { provide: MAT_DATE_FORMATS, useValue: DATE_FORMAT }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -3,7 +3,13 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  APP_NAME: 'Wedding-App',
+  API_ENDPOINT: 'http://localhost:3000',
+  DATE_FORMAT: 'MM/dd/yyyy',
+  DATE_TIME_FORMAT: 'MM/dd/yyyy hh:mm a',
+  HASH_KEY: 'Wedding-App-Hash',
+  PAGINATION_LIMIT: 10
 };
 
 /*

@@ -3,3 +3,34 @@
 
 // Import app.theme.scss
 @import "app/app.theme";
+
+content > app-panel > *:not(router-outlet) {
+  display: flex;
+  flex: 1 0 auto;
+  width: 100%;
+  min-width: 100%;
+}
+
+input {
+  font-family: Muli, Helvetica Neue, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.toast-error {
+  background-color: #EA4335 !important;
+  color: #EEEEEE !important;
+
+  .mat-button-wrapper {
+    color: #EEEEEE !important;
+  }
+}
+
+.toast-success {
+  background-color: #4285F4 !important;
+  color: #EEEEEE !important;
+
+  .mat-button-wrapper {
+    color: #EEEEEE !important;
+  }
+}
