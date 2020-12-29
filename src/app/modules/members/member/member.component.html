@@ -1,0 +1,192 @@
+<div id="member" class="page-layout carded fullwidth inner-scroll">
+
+  <!-- TOP BACKGROUND -->
+  <div class="top-bg accent"></div>
+  <!-- / TOP BACKGROUND -->
+
+  <!-- CENTER -->
+  <div class="center">
+
+    <!-- HEADER -->
+    <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+      <!-- APP TITLE -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+
+        <button mat-icon-button class="mr-0 mr-sm-16" (click)="_location.back()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+
+        <div class="member-image mr-8 mr-sm-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+          <img class="avatar member-image" *ngIf="member.images[0]" [src]="member.images[0].url">
+          <img class="avatar member-image" *ngIf="!member.images[0]" [src]="'assets/images/avatar.jpg'">
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="start start" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+          <div class="h2" *ngIf="pageType ==='edit'">
+            {{member.full_name}}
+          </div>
+          <div class="h2" *ngIf="pageType ==='new'">
+            New Member
+          </div>
+          <div class="subtitle secondary-text">
+            <span>Member Detail</span>
+          </div>
+        </div>
+      </div>
+      <!-- / APP TITLE -->
+
+      <button mat-raised-button class="save-member-button" [disabled]="memberForm.invalid" *ngIf="pageType ==='new'"
+        (click)="addMember()">
+        <span>ADD</span>
+      </button>
+
+      <button mat-raised-button class="save-member-button" [disabled]="memberForm.invalid || memberForm.pristine"
+        *ngIf="pageType ==='edit'" (click)="saveMember()">
+        <span>SAVE</span>
+      </button>
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT CARD -->
+    <div class="content-card">
+
+      <!-- CONTENT -->
+      <div class="content">
+
+        <form name="memberForm" [formGroup]="memberForm" class="member w-100-p" fxLayout="column" fxFlex>
+
+          <mat-tab-group>
+
+            <mat-tab label="Basic Info">
+
+              <div class="tab-content p-24" fusePerfectScrollbar>
+
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label>First Name</mat-label>
+                  <input matInput placeholder="First Name" name="first_name" formControlName="first_name" required>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label>Last Name</mat-label>
+                  <input matInput placeholder="Last Name" name="last_name" formControlName="last_name" required>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label>Email</mat-label>
+                  <input matInput placeholder="Email" name="email" formControlName="email" [readonly]="pageType === 'edit'" required>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label>Phone</mat-label>
+                  <input matInput placeholder="Phone" name="phone" formControlName="phone" [readonly]="pageType === 'edit'" required>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label>Date of Birth</mat-label>
+                  <input matInput placeholder="Date of Birth" name="dob" formControlName="dob" readonly required [matDatepicker]="picker">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label>Gender</mat-label>
+                  <mat-select formControlName="gender" required>
+                    <mat-option value="Male">Male</mat-option>
+                    <mat-option value="Female">Female</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label>Status</mat-label>
+                  <mat-select formControlName="active" required>
+                    <mat-option [value]="true">Active</mat-option>
+                    <mat-option [value]="false">Inactive</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <!-- <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+
+                  <mat-label>Tags</mat-label>
+
+                  <mat-chip-list #tagList name="tags" formControlName="tags">
+
+                    <mat-chip *ngFor="let tag of member.tags" [removable]="true" (removed)="member.removeTag(tag)">
+                      {{tag}}
+                      <mat-icon matChipRemove>cancel</mat-icon>
+                    </mat-chip>
+
+                    <input [matChipInputFor]="tagList" [matChipInputAddOnBlur]="true"
+                      (matChipInputTokenEnd)="member.addTag($event)" />
+
+                  </mat-chip-list>
+
+                </mat-form-field> -->
+
+              </div>
+
+            </mat-tab>
+
+            <mat-tab label="Images">
+
+              <div class="tab-content p-24" fusePerfectScrollbar>
+                <div fxLayout="row wrap" fxLayoutAlign="start start">
+
+                  <div *ngIf="member.images.length === 0" class="member-image" fxlayout="row"
+                    fxLayoutAlign="center center">
+                    <img class="media" [src]="'assets/images/ecommerce/member-image-placeholder.png'">
+                  </div>
+
+                  <div *ngFor="let image of member.images">
+                    <div *ngIf="member.images.length > 0" class="member-image" fxlayout="row"
+                      fxLayoutAlign="center center">
+                      <img class="media" [src]="image.url">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </mat-tab>
+
+            <mat-tab label="Additional Info">
+
+              <div class="tab-content p-24" fusePerfectScrollbar>
+
+
+
+              </div>
+            </mat-tab>
+
+            <mat-tab label="Preferences">
+
+              <div class="tab-content p-24" fusePerfectScrollbar>
+
+
+
+              </div>
+
+            </mat-tab>
+
+            <mat-tab label="Membership">
+
+              <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+
+
+              </div>
+
+            </mat-tab>
+
+          </mat-tab-group>
+
+        </form>
+
+      </div>
+      <!-- / CONTENT -->
+
+    </div>
+    <!-- / CONTENT CARD -->
+
+  </div>
+  <!-- / CENTER -->
+
+</div>

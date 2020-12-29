@@ -8,15 +8,20 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatSortModule } from '@angular/material/sort';
 import { FuseWidgetModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MemberComponent } from './member/member.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 
 @NgModule({
-  declarations: [MembersComponent],
+  declarations: [MembersComponent, MemberComponent],
   imports: [
     CommonModule,
     MembersRoutingModule,
@@ -28,6 +33,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatRippleModule,
     MatSortModule,
     MatTableModule,
+    MatTabsModule,
+    MatChipsModule,
+    MatSelectModule,
+    MatDatepickerModule,
     FuseSharedModule,
     FuseWidgetModule
   ]

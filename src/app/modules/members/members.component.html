@@ -58,8 +58,8 @@
         <ng-container matColumnDef="image">
           <mat-header-cell *matHeaderCellDef></mat-header-cell>
           <mat-cell *matCellDef="let member">
-            <img class="member-image" *ngIf="member.image" [alt]="member.name" [src]="member.image" />
-            <img class="member-image" *ngIf="!member.image" [src]="'assets/images/avatars/alice.jpg'">
+            <img class="avatar member-image" *ngIf="member.image" [alt]="member.name" [src]="member.image" />
+            <img class="avatar member-image" *ngIf="!member.image" [src]="'assets/images/avatar.jpg'">
           </mat-cell>
         </ng-container>
 
