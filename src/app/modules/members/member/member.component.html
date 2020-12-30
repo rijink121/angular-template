@@ -18,8 +18,8 @@
         </button>
 
         <div class="member-image mr-8 mr-sm-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
-          <img class="avatar member-image" *ngIf="member.images[0]" [src]="member.images[0].url">
-          <img class="avatar member-image" *ngIf="!member.images[0]" [src]="'assets/images/avatar.jpg'">
+          <img class="avatar member-image border" *ngIf="member.image" [src]="member.image">
+          <img class="avatar member-image border" *ngIf="!member.image" [src]="'assets/images/avatar.jpg'">
         </div>
 
         <div fxLayout="column" fxLayoutAlign="start start" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
@@ -41,8 +41,8 @@
         <span>ADD</span>
       </button>
 
-      <button mat-raised-button class="save-member-button" [disabled]="memberForm.invalid || memberForm.pristine"
-        *ngIf="pageType ==='edit'" (click)="saveMember()">
+      <button mat-raised-button class="save-member-button" [disabled]="memberForm.invalid" *ngIf="pageType ==='edit'"
+        (click)="saveMember()">
         <span>SAVE</span>
       </button>
     </div>
@@ -64,27 +64,41 @@
 
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label>First Name</mat-label>
-                  <input matInput placeholder="First Name" name="first_name" formControlName="first_name" required>
+                  <input matInput name="first_name" formControlName="first_name" required>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label>Last Name</mat-label>
-                  <input matInput placeholder="Last Name" name="last_name" formControlName="last_name" required>
+                  <input matInput name="last_name" formControlName="last_name" required>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label>Email</mat-label>
-                  <input matInput placeholder="Email" name="email" formControlName="email" [readonly]="pageType === 'edit'" required>
+                  <input matInput name="email" formControlName="email" [readonly]="pageType === 'edit'" type="email"
+                    required>
                 </mat-form-field>
+
+                <mat-checkbox class="verify-check" name="email_verified" formControlName="email_verified">Email address
+                  verified?</mat-checkbox>
 
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label>Phone</mat-label>
-                  <input matInput placeholder="Phone" name="phone" formControlName="phone" [readonly]="pageType === 'edit'" required>
+                  <input matInput name="phone" formControlName="phone" [readonly]="pageType === 'edit'" required>
                 </mat-form-field>
+
+                <mat-checkbox class="verify-check" name="phone_verified" formControlName="phone_verified">Phone number
+                  verified?</mat-checkbox>
+
+                <div [hidden]="pageType !== 'new'">
+                  <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Password</mat-label>
+                    <input matInput name="password" formControlName="password" [required]="pageType === 'new'">
+                  </mat-form-field>
+                </div>
 
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                   <mat-label>Date of Birth</mat-label>
-                  <input matInput placeholder="Date of Birth" name="dob" formControlName="dob" readonly required [matDatepicker]="picker">
+                  <input matInput name="dob" formControlName="dob" readonly required [matDatepicker]="picker">
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
@@ -105,24 +119,6 @@
                   </mat-select>
                 </mat-form-field>
 
-                <!-- <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-
-                  <mat-label>Tags</mat-label>
-
-                  <mat-chip-list #tagList name="tags" formControlName="tags">
-
-                    <mat-chip *ngFor="let tag of member.tags" [removable]="true" (removed)="member.removeTag(tag)">
-                      {{tag}}
-                      <mat-icon matChipRemove>cancel</mat-icon>
-                    </mat-chip>
-
-                    <input [matChipInputFor]="tagList" [matChipInputAddOnBlur]="true"
-                      (matChipInputTokenEnd)="member.addTag($event)" />
-
-                  </mat-chip-list>
-
-                </mat-form-field> -->
-
               </div>
 
             </mat-tab>
@@ -132,16 +128,20 @@
               <div class="tab-content p-24" fusePerfectScrollbar>
                 <div fxLayout="row wrap" fxLayoutAlign="start start">
 
-                  <div *ngIf="member.images.length === 0" class="member-image" fxlayout="row"
-                    fxLayoutAlign="center center">
-                    <img class="media" [src]="'assets/images/ecommerce/member-image-placeholder.png'">
+                  <div *ngFor="let image of member.images" class="board-list-item">
+                    <mat-card class="image-card">
+                      <img mat-card-image [src]="image.url" alt="Photo of a Shiba Inu">
+                      <mat-card-actions>
+                        <button mat-button color="accent" [disabled]="image.default">DEFAULT</button>
+                        <button mat-button color="warn">DELETE</button>
+                      </mat-card-actions>
+                    </mat-card>
                   </div>
 
-                  <div *ngFor="let image of member.images">
-                    <div *ngIf="member.images.length > 0" class="member-image" fxlayout="row"
-                      fxLayoutAlign="center center">
-                      <img class="media" [src]="image.url">
-                    </div>
+                  <div class="board-list-item add-new-board" fxLayout="column" fxLayoutAlign="center center"
+                    [@animate]="{value:'*',params:{y:'100%'}}">
+                    <mat-icon class="s-56">add_circle</mat-icon>
+                    <div class="board-name">Add Image</div>
                   </div>
                 </div>
               </div>
@@ -152,16 +152,315 @@
 
               <div class="tab-content p-24" fusePerfectScrollbar>
 
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label>Marital Status</mat-label>
+                  <mat-select formControlName="marital_status" required>
+                    <mat-option *ngFor="let item of maritalStatuses" [value]="item">
+                      {{item}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
 
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label>Religious Status</mat-label>
+                  <mat-select formControlName="religious_status">
+                    <mat-option *ngFor="let item of religiousStatuses" [value]="item">
+                      {{item}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label>Sect</mat-label>
+                  <mat-select formControlName="sect">
+                    <mat-option *ngFor="let item of sects" [value]="item">
+                      {{item}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label>Education</mat-label>
+                  <mat-select formControlName="education">
+                    <mat-option *ngFor="let item of educations" [value]="item">
+                      {{item}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label>Occupation</mat-label>
+                  <mat-select formControlName="occupation">
+                    <mat-option *ngFor="let item of occupations" [value]="item">
+                      {{item}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label>Height</mat-label>
+                  <input matInput name="height" formControlName="height" type="number" min="80" max="240">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label>Weight</mat-label>
+                  <input matInput name="weight" formControlName="weight" type="number" min="30" max="200">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label>Complexion</mat-label>
+                  <mat-select formControlName="complexion">
+                    <mat-option *ngFor="let item of complexions" [value]="item">
+                      {{item}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label>Body Type</mat-label>
+                  <mat-select formControlName="body_type">
+                    <mat-option *ngFor="let item of bodyTypes" [value]="item">
+                      {{item}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
 
               </div>
             </mat-tab>
 
             <mat-tab label="Preferences">
 
-              <div class="tab-content p-24" fusePerfectScrollbar>
+              <div class="tab-content p-24" fusePerfectScrollbar formGroupName="preferences">
 
+                <div fxLayout="row" fxLayoutAlign="space-between">
 
+                  <mat-form-field appearance="outline" floatLabel="always" fxFlex="49">
+                    <mat-label>Minimum Age</mat-label>
+                    <input matInput name="min_age" formControlName="min_age" type="number" min="18" max="70">
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" floatLabel="always" fxFlex="49">
+                    <mat-label>Maximum Age</mat-label>
+                    <input matInput name="max_age" formControlName="max_age" type="number" min="18" max="70">
+                  </mat-form-field>
+
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="space-between">
+
+                  <mat-form-field appearance="outline" floatLabel="always" fxFlex="49">
+                    <mat-label>Minimum Height</mat-label>
+                    <input matInput name="min_height" formControlName="min_height" type="number" min="80" max="240">
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" floatLabel="always" fxFlex="49">
+                    <mat-label>Maximum Height</mat-label>
+                    <input matInput name="max_height" formControlName="max_height" type="number" min="80" max="240">
+                  </mat-form-field>
+
+                </div>
+
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+
+                  <mat-label>Marital Statuses</mat-label>
+
+                  <mat-chip-list #maritalStatusList name="maritalStatuses" formControlName="marital_statuses">
+                    <mat-chip *ngFor="let item of member.preferences.marital_statuses" [selectable]="true"
+                      [removable]="true" [multiple]="true" (removed)="member.removeMaritalStatus(item)">
+                      {{item}}
+                      <mat-icon matChipRemove>cancel</mat-icon>
+                    </mat-chip>
+                    <input #maritalStatusInput #maritalStatusTrigger="matAutocompleteTrigger"
+                      [formControl]="member.maritalStatusCtrl" [matAutocomplete]="maritalStatusAuto"
+                      [matChipInputFor]="maritalStatusList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                      (matChipInputTokenEnd)="member.addMaritalStatus($event, maritalStatuses)">
+                  </mat-chip-list>
+                  <mat-autocomplete #maritalStatusAuto="matAutocomplete" [autoActiveFirstOption]="true"
+                    (optionSelected)="member.selectMaritalStatus($event, maritalStatusTrigger, maritalStatusInput)">
+                    <mat-option value="Any"
+                      *ngIf="member.preferences.marital_statuses.indexOf('Any') === -1 && !member.maritalStatusCtrl.value">
+                      Any</mat-option>
+                    <mat-option
+                      *ngFor="let item of maritalStatuses | chipsFilter:member.preferences.marital_statuses:member.maritalStatusCtrl.value"
+                      [value]="item">
+                      {{item}}
+                    </mat-option>
+                  </mat-autocomplete>
+
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+
+                  <mat-label>Religious Statuses</mat-label>
+
+                  <mat-chip-list #religiousStatusList name="religiousStatuses" formControlName="religious_statuses">
+                    <mat-chip *ngFor="let item of member.preferences.religious_statuses" [selectable]="true"
+                      [removable]="true" [multiple]="true" (removed)="member.removeReligiousStatus(item)">
+                      {{item}}
+                      <mat-icon matChipRemove>cancel</mat-icon>
+                    </mat-chip>
+                    <input #religiousStatusInput #religiousStatusTrigger="matAutocompleteTrigger"
+                      [formControl]="member.religiousStatusCtrl" [matAutocomplete]="religiousStatusAuto"
+                      [matChipInputFor]="religiousStatusList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                      (matChipInputTokenEnd)="member.addReligiousStatus($event, religiousStatuses)">
+                  </mat-chip-list>
+                  <mat-autocomplete #religiousStatusAuto="matAutocomplete" [autoActiveFirstOption]="true"
+                    (optionSelected)="member.selectReligiousStatus($event, religiousStatusTrigger, religiousStatusInput)">
+                    <mat-option value="Any"
+                      *ngIf="member.preferences.religious_statuses.indexOf('Any') === -1 && !member.religiousStatusCtrl.value">
+                      Any</mat-option>
+                    <mat-option
+                      *ngFor="let item of religiousStatuses | chipsFilter:member.preferences.religious_statuses:member.religiousStatusCtrl.value"
+                      [value]="item">
+                      {{item}}
+                    </mat-option>
+                  </mat-autocomplete>
+
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+
+                  <mat-label>Sects</mat-label>
+
+                  <mat-chip-list #sectList name="sects" formControlName="sects">
+                    <mat-chip *ngFor="let item of member.preferences.sects" [selectable]="true" [removable]="true"
+                      [multiple]="true" (removed)="member.removeSect(item)">
+                      {{item}}
+                      <mat-icon matChipRemove>cancel</mat-icon>
+                    </mat-chip>
+                    <input #sectInput #sectTrigger="matAutocompleteTrigger" [formControl]="member.sectCtrl"
+                      [matAutocomplete]="sectAuto" [matChipInputFor]="sectList"
+                      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                      (matChipInputTokenEnd)="member.addSect($event, sects)">
+                  </mat-chip-list>
+                  <mat-autocomplete #sectAuto="matAutocomplete" [autoActiveFirstOption]="true"
+                    (optionSelected)="member.selectSect($event, sectTrigger, sectInput)">
+                    <mat-option value="Any"
+                      *ngIf="member.preferences.sects.indexOf('Any') === -1 && !member.sectCtrl.value">Any
+                    </mat-option>
+                    <mat-option *ngFor="let item of sects | chipsFilter:member.preferences.sects:member.sectCtrl.value"
+                      [value]="item">
+                      {{item}}
+                    </mat-option>
+                  </mat-autocomplete>
+
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+
+                  <mat-label>Educations</mat-label>
+
+                  <mat-chip-list #educationList name="educations" formControlName="educations">
+                    <mat-chip *ngFor="let item of member.preferences.educations" [selectable]="true" [removable]="true"
+                      [multiple]="true" (removed)="member.removeEducation(item)">
+                      {{item}}
+                      <mat-icon matChipRemove>cancel</mat-icon>
+                    </mat-chip>
+                    <input #educationInput #educationTrigger="matAutocompleteTrigger"
+                      [formControl]="member.educationCtrl" [matAutocomplete]="educationAuto"
+                      [matChipInputFor]="educationList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                      (matChipInputTokenEnd)="member.addEducation($event, educations)">
+                  </mat-chip-list>
+                  <mat-autocomplete #educationAuto="matAutocomplete" [autoActiveFirstOption]="true"
+                    (optionSelected)="member.selectEducation($event, educationTrigger, educationInput)">
+                    <mat-option value="Any"
+                      *ngIf="member.preferences.educations.indexOf('Any') === -1 && !member.educationCtrl.value">
+                      Any</mat-option>
+                    <mat-option
+                      *ngFor="let item of educations | chipsFilter:member.preferences.educations:member.educationCtrl.value"
+                      [value]="item">
+                      {{item}}
+                    </mat-option>
+                  </mat-autocomplete>
+
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+
+                  <mat-label>Occupations</mat-label>
+
+                  <mat-chip-list #occupationList name="occupations" formControlName="occupations">
+                    <mat-chip *ngFor="let item of member.preferences.occupations" [selectable]="true" [removable]="true"
+                      [multiple]="true" (removed)="member.removeOccupation(item)">
+                      {{item}}
+                      <mat-icon matChipRemove>cancel</mat-icon>
+                    </mat-chip>
+                    <input #occupationInput #occupationTrigger="matAutocompleteTrigger"
+                      [formControl]="member.occupationCtrl" [matAutocomplete]="occupationAuto"
+                      [matChipInputFor]="occupationList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                      (matChipInputTokenEnd)="member.addOccupation($event, occupations)">
+                  </mat-chip-list>
+                  <mat-autocomplete #occupationAuto="matAutocomplete" [autoActiveFirstOption]="true"
+                    (optionSelected)="member.selectOccupation($event, occupationTrigger, occupationInput)">
+                    <mat-option value="Any"
+                      *ngIf="member.preferences.occupations.indexOf('Any') === -1 && !member.occupationCtrl.value">
+                      Any</mat-option>
+                    <mat-option
+                      *ngFor="let item of occupations | chipsFilter:member.preferences.occupations:member.occupationCtrl.value"
+                      [value]="item">
+                      {{item}}
+                    </mat-option>
+                  </mat-autocomplete>
+
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+
+                  <mat-label>Complexions</mat-label>
+
+                  <mat-chip-list #complexionList name="complexions" formControlName="complexions">
+                    <mat-chip *ngFor="let item of member.preferences.complexions" [selectable]="true" [removable]="true"
+                      [multiple]="true" (removed)="member.removeComplexion(item)">
+                      {{item}}
+                      <mat-icon matChipRemove>cancel</mat-icon>
+                    </mat-chip>
+                    <input #complexionInput #complexionTrigger="matAutocompleteTrigger"
+                      [formControl]="member.complexionCtrl" [matAutocomplete]="complexionAuto"
+                      [matChipInputFor]="complexionList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                      (matChipInputTokenEnd)="member.addComplexion($event, complexions)">
+                  </mat-chip-list>
+                  <mat-autocomplete #complexionAuto="matAutocomplete" [autoActiveFirstOption]="true"
+                    (optionSelected)="member.selectComplexion($event, complexionTrigger, complexionInput)">
+                    <mat-option value="Any"
+                      *ngIf="member.preferences.complexions.indexOf('Any') === -1 && !member.complexionCtrl.value">
+                      Any</mat-option>
+                    <mat-option
+                      *ngFor="let item of complexions | chipsFilter:member.preferences.complexions:member.complexionCtrl.value"
+                      [value]="item">
+                      {{item}}
+                    </mat-option>
+                  </mat-autocomplete>
+
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+
+                  <mat-label>BodyTypes</mat-label>
+
+                  <mat-chip-list #bodyTypeList name="body_types" formControlName="body_types">
+                    <mat-chip *ngFor="let item of member.preferences.body_types" [selectable]="true" [removable]="true"
+                      [multiple]="true" (removed)="member.removeBodyType(item)">
+                      {{item}}
+                      <mat-icon matChipRemove>cancel</mat-icon>
+                    </mat-chip>
+                    <input #bodyTypeInput #bodyTypeTrigger="matAutocompleteTrigger" [formControl]="member.bodyTypeCtrl"
+                      [matAutocomplete]="bodyTypeAuto" [matChipInputFor]="bodyTypeList"
+                      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                      (matChipInputTokenEnd)="member.addBodyType($event, bodyTypes)">
+                  </mat-chip-list>
+                  <mat-autocomplete #bodyTypeAuto="matAutocomplete" [autoActiveFirstOption]="true"
+                    (optionSelected)="member.selectBodyType($event, bodyTypeTrigger, bodyTypeInput)">
+                    <mat-option value="Any"
+                      *ngIf="member.preferences.body_types.indexOf('Any') === -1 && !member.bodyTypeCtrl.value">
+                      Any</mat-option>
+                    <mat-option
+                      *ngFor="let item of bodyTypes | chipsFilter:member.preferences.body_types:member.bodyTypeCtrl.value"
+                      [value]="item">
+                      {{item}}
+                    </mat-option>
+                  </mat-autocomplete>
+
+                </mat-form-field>
 
               </div>
 
@@ -171,7 +470,23 @@
 
               <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
 
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                  <mat-label>Plan</mat-label>
+                  <mat-select formControlName="plan" required #plan>
+                    <mat-option value="Basic">Basic</mat-option>
+                    <mat-option value="Premium">Premium</mat-option>
+                  </mat-select>
+                </mat-form-field>
 
+                <div [hidden]="plan.value !== 'Premium'">
+                  <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Expired On</mat-label>
+                    <input matInput name="plan_expiry" formControlName="plan_expiry" readonly
+                      [required]="plan.value === 'Premium'" [matDatepicker]="planExpirypicker">
+                    <mat-datepicker-toggle matSuffix [for]="planExpirypicker"></mat-datepicker-toggle>
+                    <mat-datepicker #planExpirypicker></mat-datepicker>
+                  </mat-form-field>
+                </div>
               </div>
 
             </mat-tab>

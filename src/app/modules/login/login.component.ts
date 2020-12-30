@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
     const { data, error, message } = await this.apiService.authenticate(this.auth);
     this._fuseProgressBarService.hide();
     if (!!error) {
-      this._snackBar.open(message, 'Ok', {
+      this._snackBar.open(message, 'OK', {
         duration: 3000,
         horizontalPosition: 'center',
         verticalPosition: 'top',
@@ -79,7 +79,7 @@ export class LoginComponent implements OnInit {
     }
     this.authService.saveSession(data.userdata, data.token, data.expires, data.session_id);
     this.authService.saveCredential(this.auth);
-    this._snackBar.open('Welcome admin!', 'Ok', {
+    this._snackBar.open('Welcome admin!', 'OK', {
       duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'top',

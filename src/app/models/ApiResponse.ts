@@ -1,8 +1,8 @@
-import { User } from './User';
 import { UserType } from './UserType';
 import { Cms } from './Cms';
 import { Template } from './Template';
 import { State } from './State';
+import { Member } from 'app/modules/members/member/member.model';
 
 export interface ApiResponse {
   data?: any;
@@ -14,7 +14,7 @@ export interface ApiGetAllData {
   count: number;
   limit: number;
   offset: number;
-  users?: User[];
+  users?: Member[];
   user_types?: UserType[];
   cms?: Cms[];
   templates?: Template[];
@@ -29,7 +29,7 @@ export interface ApiGetAllResponse {
 
 export interface ApiGetOneData {
   template?: Template;
-  user?: User;
+  user?: Member;
 }
 
 export interface ApiGetOneResponse {
@@ -51,7 +51,7 @@ export interface ApiGetCountResponse {
 export interface LoginData {
   token: string;
   expires: string;
-  userdata: User;
+  userdata: Member;
   session_id: string;
 }
 

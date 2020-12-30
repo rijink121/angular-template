@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AES, SHA512, enc } from 'crypto-js';
 import { environment } from 'environments/environment';
-import { User } from '../models/User';
 import { Moment } from 'moment-timezone';
 import { Auth } from '../models/Auth';
 import { moment, isExpired, timeRemaining } from '../helpers.function';
+import { Member } from 'app/modules/members/member/member.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,13 +13,13 @@ export class AuthService {
 
   token: string;
   session_id: string;
-  user: User;
+  user: Member;
   expires: Moment;
   status = false;
 
   constructor() { }
 
-  saveSession(user: User, token: string, expires: string, session_id: string): void {
+  saveSession(user: Member, token: string, expires: string, session_id: string): void {
     this.user = user;
     this.token = token;
     this.session_id = session_id;
@@ -36,7 +36,7 @@ export class AuthService {
     this.status = true;
   }
 
-  updateUserData(user: User): void {
+  updateUserData(user: Member): void {
     this.user = user;
     const obj = {
       token: this.token,

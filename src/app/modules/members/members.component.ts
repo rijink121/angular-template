@@ -126,7 +126,7 @@ export class MembersComponent implements OnInit {
     });
     this._fuseProgressBarService.hide();
     if (!!error) {
-      this._snackBar.open(message, 'Ok', {
+      this._snackBar.open(message, 'OK', {
         duration: 3000,
         horizontalPosition: 'center',
         verticalPosition: 'top',

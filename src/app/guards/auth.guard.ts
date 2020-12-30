@@ -37,11 +37,6 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   async canActivateChild(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-    if ((state.url.indexOf('/offices') > -1 || state.url.indexOf('/templates') > -1)
-      && this.authService.user?.user_type !== 3) {
-      this.router.navigate(['/']);
-      return false;
-    }
     const status = this.authService.checkTokenStatus();
     if (!status) {
       const auth = this.authService.getCredential();
@@ -52,7 +47,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
           return true;
         }
       }
-      this._snackBar.open('Session expired!', 'Ok', {
+      this._snackBar.open('Session expired!', 'OK', {
         duration: 3000,
         horizontalPosition: 'center',
         verticalPosition: 'top',

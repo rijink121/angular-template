@@ -27,10 +27,10 @@ const DATE_FORMAT = {
     dateInput: 'LL',
   },
   display: {
-    dateInput: 'MM/DD/YYYY',
-    monthYearLabel: 'YYYY',
+    dateInput: 'LL',
+    monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'YYYY',
+    monthYearA11yLabel: 'MMMM YYYY',
   },
 };
 

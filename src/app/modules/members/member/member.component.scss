@@ -1,0 +1,106 @@
+@import "src/@fuse/scss/fuse";
+
+#member {
+
+  .header {
+
+    .member-image {
+      overflow: hidden;
+      width: 56px;
+      min-width: 56px;
+      max-width: 56px;
+      height: 56px;
+      min-height: 56px;
+      max-height: 56px;
+      border-radius: 4px;
+
+      img {
+        height: 100%;
+        width: auto;
+        max-width: none;
+      }
+    }
+
+    .subtitle {
+      margin: 6px 0 0 0;
+    }
+  }
+
+  .content {
+
+    .mat-tab-group,
+    .mat-tab-body-wrapper,
+    .tab-content {
+      flex: 1 1 auto;
+      max-width: 100%;
+    }
+
+    .mat-tab-body-content {
+      display: flex;
+    }
+
+    .mat-tab-label {
+      height: 64px;
+    }
+
+    .member-image {
+      overflow: hidden;
+      width: 208px;
+      height: 208px;
+      margin-right: 16px;
+      margin-bottom: 16px;
+      border-radius: 4px;
+
+      img {
+        height: 100%;
+        width: auto;
+        max-width: none;
+      }
+    }
+
+    .verify-check {
+      padding: 0 10px 20px;
+      margin-top: -10px;
+    }
+
+    .board-list-item {
+      min-width: 210px;
+      min-height: 210px;
+      width: 210px;
+      height: 210px;
+      padding: 0;
+      margin: 16px;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.12);
+      transition: box-shadow 150ms ease-in;
+      cursor: pointer;
+
+      &.add-new-board:hover, button:hover {
+        @include mat-elevation(8);
+      }
+
+      &.add-new-board {
+        background: rgba(0, 0, 0, 0.06);
+        border: 2px dashed rgba(255, 255, 255, 0.37);
+      }
+
+      .board-name {
+        padding: 16px 32px 0 32px;
+        font-weight: 300;
+        font-size: 16px;
+        text-align: center;
+      }
+
+      img {
+        margin-bottom: 0 !important;
+      }
+    }
+
+    // Temporary prefix alignment fix
+    .mat-form-field-appearance-outline .mat-form-field-prefix,
+    .mat-form-field-appearance-outline .mat-form-field-suffix {
+      top: 0;
+    }
+  }
+
+}

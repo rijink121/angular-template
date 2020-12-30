@@ -18,10 +18,14 @@ import { MemberComponent } from './member/member.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ChipsFilterPipe } from 'app/pipes/chips-filter.pipe';
 
 
 @NgModule({
-  declarations: [MembersComponent, MemberComponent],
+  declarations: [MembersComponent, MemberComponent, ChipsFilterPipe],
   imports: [
     CommonModule,
     MembersRoutingModule,
@@ -35,8 +39,11 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatTableModule,
     MatTabsModule,
     MatChipsModule,
+    MatCardModule,
     MatSelectModule,
     MatDatepickerModule,
+    MatCheckboxModule,
+    MatAutocompleteModule,
     FuseSharedModule,
     FuseWidgetModule
   ]
