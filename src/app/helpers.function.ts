@@ -20,6 +20,14 @@ export function toDate(date: string | m.Moment): string {
   return m(date).format('YYYY-MM-DD');
 }
 
+export function addDate(num: number, unit: m.unitOfTime.DurationConstructor, date: string | m.Moment = m()): m.Moment {
+  return m(date).add(num, unit);
+}
+
+export function substractDate(num: number, unit: m.unitOfTime.DurationConstructor, date: string | m.Moment = m()): m.Moment {
+  return m(date).subtract(num, unit);
+}
+
 export function convertFilterToWhere(fl: object): object {
   const where = { ...fl };
   for (const key in where) {

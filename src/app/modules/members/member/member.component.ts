@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Member } from './member.model';
@@ -8,7 +8,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseProgressBarService } from '@fuse/components/progress-bar/progress-bar.service';
 import { ApiService } from 'app/services/api.service';
 import { ENTER } from '@angular/cdk/keycodes';
-import { toDate } from 'app/helpers.function';
+import { addDate, toDate } from 'app/helpers.function';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -49,7 +49,7 @@ export class MemberComponent implements OnInit, OnDestroy {
       }
     });
     this.member = new Member();
-    this.memberForm = this.createMemberForm();
+    this.createMemberForm();
   }
 
   ngOnInit(): void { }
@@ -65,7 +65,7 @@ export class MemberComponent implements OnInit, OnDestroy {
     this.pageType = this._id === 'new' ? 'new' : 'edit';
     if (this.pageType === 'edit') {
       await this.getMember();
-      this.memberForm = this.createMemberForm();
+      this.createMemberForm();
     }
   }
 
@@ -92,30 +92,55 @@ export class MemberComponent implements OnInit, OnDestroy {
     *
     * @returns {FormGroup}
   */
-  createMemberForm(): FormGroup {
-    return this._formBuilder.group({
-      first_name: [this.member.first_name],
-      last_name: [this.member.last_name],
-      email: [this.member.email],
-      phone: [this.member.phone],
-      password: [this.member.password],
-      gender: [this.member.gender],
-      dob: [this.member.dob],
-      images: [this.member.images],
-      active: [this.member.active],
-      email_verified: [this.member.email_verified],
-      phone_verified: [this.member.phone_verified],
-      marital_status: [this.member.marital_status],
-      religious_status: [this.member.religious_status],
-      sect: [this.member.sect],
-      education: [this.member.education],
-      occupation: [this.member.occupation],
-      height: [this.member.height],
-      weight: [this.member.weight],
-      complexion: [this.member.complexion],
-      body_type: [this.member.body_type],
-      plan: [this.member.plan],
-      plan_expiry: [this.member.plan_expiry],
+  createMemberForm(): void {
+    this.memberForm = this._formBuilder.group({
+      first_name: new FormControl(this.member.first_name, [
+        Validators.required,
+      ]),
+      last_name: new FormControl(this.member.last_name, [
+        Validators.required,
+      ]),
+      email: new FormControl(this.member.email, [
+        Validators.required,
+        Validators.email
+      ]),
+      phone: new FormControl(this.member.phone, [
+        Validators.required,
+      ]),
+      password: new FormControl(this.member.password),
+      gender: new FormControl(this.member.gender, [
+        Validators.required,
+      ]),
+      dob: new FormControl(this.member.dob, [
+        Validators.required,
+      ]),
+      images: new FormControl(this.member.images),
+      active: new FormControl(this.member.active, [
+        Validators.required,
+      ]),
+      email_verified: new FormControl(this.member.email_verified),
+      phone_verified: new FormControl(this.member.phone_verified),
+      marital_status: new FormControl(this.member.marital_status, [
+        Validators.required,
+      ]),
+      religious_status: new FormControl(this.member.religious_status),
+      sect: new FormControl(this.member.sect),
+      education: new FormControl(this.member.education),
+      occupation: new FormControl(this.member.occupation),
+      height: new FormControl(this.member.height, [
+        Validators.min(80),
+        Validators.max(240)
+      ]),
+      weight: new FormControl(this.member.weight, [
+        Validators.min(30),
+        Validators.max(200)
+      ]),
+      complexion: new FormControl(this.member.complexion),
+      body_type: new FormControl(this.member.body_type),
+      plan: new FormControl(this.member.plan, [
+        Validators.required,
+      ]),
+      plan_expiry: new FormControl(this.member.plan_expiry),
       preferences: this._formBuilder.group({
         min_age: [this.member.preferences.min_age],
         max_age: [this.member.preferences.max_age],
@@ -129,6 +154,11 @@ export class MemberComponent implements OnInit, OnDestroy {
         complexions: [this.member.preferences.complexions],
         body_types: [this.member.preferences.body_types],
       })
+    });
+
+    this.memberForm.get('plan').valueChanges.subscribe(value => {
+      const expiry = value === 'Premium' ? this.member.plan_expiry ?? addDate(6, 'months') : null;
+      this.memberForm.patchValue({ plan_expiry: expiry });
     });
   }
 
