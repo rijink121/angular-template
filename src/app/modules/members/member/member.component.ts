@@ -10,6 +10,9 @@ import { ApiService } from 'app/services/api.service';
 import { ENTER } from '@angular/cdk/keycodes';
 import { addDate, toDate } from 'app/helpers.function';
 import { Subscription } from 'rxjs';
+import { ImageCropperComponent } from 'ngx-image-cropper';
+import { MatDialog } from '@angular/material/dialog';
+import { ImageCropperDialogComponent } from '../image-cropper-dialog/image-cropper-dialog.component';
 
 @Component({
   selector: 'app-member',
@@ -40,6 +43,7 @@ export class MemberComponent implements OnInit, OnDestroy {
     private _formBuilder: FormBuilder,
     public _location: Location,
     private _matSnackBar: MatSnackBar,
+    public _matDialog: MatDialog,
     private _fuseProgressBarService: FuseProgressBarService,
     private _apiService: ApiService
   ) {
@@ -211,6 +215,14 @@ export class MemberComponent implements OnInit, OnDestroy {
       panelClass: 'toast-success'
     });
     this._router.navigate(['/apps/members', data.user._id], { replaceUrl: true });
+  }
+
+  openDialog() {
+    const dialogRef = this._matDialog.open(ImageCropperDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result:`, result);
+    });
   }
 
 }

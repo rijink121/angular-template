@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>{{selected ? 'Crop Image' : 'Choose Image'}}</h2>
+<mat-dialog-content class="mat-typography">
+  <input type="file" [hidden]="selected" (change)="fileChangeEvent($event)" />
+
+  <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="1 / 1" format="png"
+    (imageCropped)="imageCropped($event)" (loadImageFailed)="loadImageFailed()">
+  </image-cropper>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button cdkFocusInitial *ngIf="selected" (click)="closeDialog()">Crop</button>
+</mat-dialog-actions>
