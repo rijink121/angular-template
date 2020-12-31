@@ -105,8 +105,8 @@
 
         <!-- Active Column -->
         <ng-container matColumnDef="active">
-          <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Active</mat-header-cell>
-          <mat-cell *matCellDef="let member" fxHide fxShow.gt-xs>
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Active</mat-header-cell>
+          <mat-cell *matCellDef="let member">
             <mat-icon *ngIf="member.active" class="active-icon green-600 s-16">check</mat-icon>
             <mat-icon *ngIf="!member.active" class="active-icon red-500 s-16">close</mat-icon>
           </mat-cell>
