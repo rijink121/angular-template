@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
-import { AES, SHA512, enc } from 'crypto-js';
 import { environment } from 'environments/environment';
 import { Moment } from 'moment-timezone';
 import { Auth } from '../models/Auth';
 import { moment, isExpired, timeRemaining } from '../helpers.function';
 import { Member } from 'app/modules/members/member/member.model';
+import { sha512 } from 'js-sha512';
+import * as aesjs from 'aes-js';
+
+const key = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ];
 
 @Injectable({
   providedIn: 'root'
@@ -109,15 +112,22 @@ export class AuthService {
   }
 
   hash(str: string): string {
-    return SHA512(str).toString();
+    return sha512.hex(str);
   }
 
   encrypt(str: string): string {
-    return AES.encrypt(str, environment.HASH_KEY).toString();
+    const textBytes = aesjs.utils.utf8.toBytes(str);
+    const aesCtr = new aesjs.ModeOfOperation.ctr(key, new aesjs.Counter(5));
+    const encryptedBytes = aesCtr.encrypt(textBytes);
+    const encryptedHex = aesjs.utils.hex.fromBytes(encryptedBytes);
+    return encryptedHex;
   }
 
   decrypt(str: string): string {
-    const valueBytes = AES.decrypt(str, environment.HASH_KEY);
-    return valueBytes.toString(enc.Utf8);
+    const encryptedBytes = aesjs.utils.hex.toBytes(str);
+    const aesCtr = new aesjs.ModeOfOperation.ctr(key, new aesjs.Counter(5));
+    const decryptedBytes = aesCtr.decrypt(encryptedBytes);
+    const decryptedText = aesjs.utils.utf8.fromBytes(decryptedBytes);
+    return decryptedText;
   }
 }

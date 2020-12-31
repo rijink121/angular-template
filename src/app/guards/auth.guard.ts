@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
           return true;
         }
       }
-      this.router.navigate(['/login']);
+      this.router.navigate(['/auth/login']);
     } else {
       const { data, error } = await this.apiService.me();
       if (!error) {
@@ -30,7 +30,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         return true;
       } else {
         this.authService.clearSession();
-        this.router.navigate(['/login']);
+        this.router.navigate(['/auth/login']);
       }
     }
     return this.authService.status;
@@ -53,7 +53,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         verticalPosition: 'top',
         panelClass: 'toast-error'
       });
-      this.router.navigate(['/login']);
+      this.router.navigate(['/auth/login']);
     }
     return status;
   }
