@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { FuseProgressBarService } from '@fuse/components/progress-bar/progress-b
 import { ApiService } from 'app/services/api.service';
 import { ENTER } from '@angular/cdk/keycodes';
 import { toDate } from 'app/helpers.function';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-member',
@@ -17,7 +18,7 @@ import { toDate } from 'app/helpers.function';
   animations: fuseAnimations,
   encapsulation: ViewEncapsulation.None
 })
-export class MemberComponent implements OnInit {
+export class MemberComponent implements OnInit, OnDestroy {
 
   _id: string;
   member: Member;
@@ -31,6 +32,7 @@ export class MemberComponent implements OnInit {
   complexions = ['Very Fair', 'Fair', 'Wheatish', 'Wheatish Brown', 'Dark', 'Prefer not to say'];
   bodyTypes = ['Slim', 'Average', 'Athletic', 'Heavy', 'Prefer not to say'];
   separatorKeysCodes: number[] = [ENTER];
+  routerEventSubscription: Subscription;
 
   constructor(
     private _router: Router,
@@ -41,7 +43,7 @@ export class MemberComponent implements OnInit {
     private _fuseProgressBarService: FuseProgressBarService,
     private _apiService: ApiService
   ) {
-    _router.events.subscribe((val) => {
+    this.routerEventSubscription = _router.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {
         this.loadForm();
       }
@@ -51,6 +53,12 @@ export class MemberComponent implements OnInit {
   }
 
   ngOnInit(): void { }
+
+  ngOnDestroy(): void {
+    if (typeof this.routerEventSubscription !== 'undefined') {
+      this.routerEventSubscription.unsubscribe();
+    }
+  }
 
   async loadForm(): Promise<void> {
     this._id = this._route.snapshot.paramMap.get('id');
