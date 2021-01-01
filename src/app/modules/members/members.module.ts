@@ -22,13 +22,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ChipsFilterPipe } from 'app/pipes/chips-filter.pipe';
-import { ImageCropperDialogComponent } from './image-cropper-dialog/image-cropper-dialog.component';
+import { ImageUploadDialogComponent } from './image-upload-dialog/image-upload-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { ImageCropperModule } from 'ngx-image-cropper';
+import { MatListModule } from '@angular/material/list';
 
 
 @NgModule({
-  declarations: [MembersComponent, MemberComponent, ChipsFilterPipe, ImageCropperDialogComponent],
+  declarations: [MembersComponent, MemberComponent, ChipsFilterPipe, ImageUploadDialogComponent],
   imports: [
     CommonModule,
     MembersRoutingModule,
@@ -48,9 +48,9 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     MatCheckboxModule,
     MatAutocompleteModule,
     MatDialogModule,
+    MatListModule,
     FuseSharedModule,
-    FuseWidgetModule,
-    ImageCropperModule
+    FuseWidgetModule
   ]
 })
 export class MembersModule { }

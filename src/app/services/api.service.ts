@@ -3,7 +3,7 @@ import { HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { Auth } from '../models/Auth';
 import { HttpService } from './http.service';
-import { ApiResponse, LoginResponse, ApiGetAllResponse, ApiGetOneResponse, ApiGetCountResponse } from '../models/ApiResponse';
+import { ApiResponse, LoginResponse, ApiGetAllResponse, ApiGetOneResponse, ApiGetCountResponse, ApiUploadResponse } from '../models/ApiResponse';
 import { QueryParams } from '../models/QueryParams';
 import { AuthService } from './auth.service';
 
@@ -168,6 +168,21 @@ export class ApiService {
   async deleteById(entity: string, id: number | string, options?: QueryParams): Promise<ApiGetOneResponse> {
     try {
       const response = await this.httpService.delete(this.generateQueryUrl(`${entity}/${id}`, options), this.getHttpOption());
+      return response;
+    } catch (e) {
+      return this.errorHandler(e);
+    }
+  }
+
+  async upload(body?: any, options?: QueryParams): Promise<ApiUploadResponse> {
+    try {
+      const headers: any = {};
+      if (!!this.authService.status) {
+        headers.Authorization = `Bearer ${this.authService.token}`;
+      }
+      const response = await this.httpService.post(this.generateQueryUrl('upload', options), body, {
+        headers: new HttpHeaders(headers)
+      });
       return response;
     } catch (e) {
       return this.errorHandler(e);

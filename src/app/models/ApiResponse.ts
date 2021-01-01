@@ -3,6 +3,7 @@ import { Cms } from './Cms';
 import { Template } from './Template';
 import { State } from './State';
 import { Member } from 'app/modules/members/member/member.model';
+import { Image } from './Image';
 
 export interface ApiResponse {
   data?: any;
@@ -32,8 +33,18 @@ export interface ApiGetOneData {
   user?: Member;
 }
 
+export interface ApiUploadData {
+  image: Image
+}
+
 export interface ApiGetOneResponse {
   data?: ApiGetOneData;
+  error?: any;
+  message?: any;
+}
+
+export interface ApiUploadResponse {
+  data?: ApiUploadData;
   error?: any;
   message?: any;
 }

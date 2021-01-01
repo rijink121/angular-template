@@ -128,12 +128,14 @@
               <div class="tab-content p-24" fusePerfectScrollbar>
                 <div fxLayout="row wrap" fxLayoutAlign="start start">
 
-                  <div *ngFor="let image of member.images" class="board-list-item">
-                    <mat-card class="image-card">
-                      <img mat-card-image [src]="image.url" alt="Photo of a Shiba Inu">
+                  <div *ngFor="let image of member.images; let i = index" class="board-list-item">
+                    <mat-card>
+                      <div class="image-card" fxLayout="column" fxLayoutAlign="center center">
+                        <img mat-card-image [src]="image.url" alt="Photo of a Shiba Inu">
+                      </div>
                       <mat-card-actions>
                         <button mat-button color="accent" [disabled]="image.default">DEFAULT</button>
-                        <button mat-button color="warn">DELETE</button>
+                        <button mat-button color="warn" (click)="member.images.splice(i, 1)">DELETE</button>
                       </mat-card-actions>
                     </mat-card>
                   </div>

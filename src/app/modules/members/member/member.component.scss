@@ -43,6 +43,23 @@
       height: 64px;
     }
 
+    .image-card {
+      min-width: 210px;
+      min-height: 210px;
+      width: 210px;
+      height: 210px;
+      margin: -16px;
+      margin-bottom: 0;
+
+      img {
+        width: auto !important;
+        height: auto !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+        margin-top: 0 !important;
+      }
+    }
+
     .member-image {
       overflow: hidden;
       width: 208px;

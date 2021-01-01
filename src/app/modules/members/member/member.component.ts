@@ -10,9 +10,9 @@ import { ApiService } from 'app/services/api.service';
 import { ENTER } from '@angular/cdk/keycodes';
 import { addDate, toDate } from 'app/helpers.function';
 import { Subscription } from 'rxjs';
-import { ImageCropperComponent } from 'ngx-image-cropper';
 import { MatDialog } from '@angular/material/dialog';
-import { ImageCropperDialogComponent } from '../image-cropper-dialog/image-cropper-dialog.component';
+import { ImageUploadDialogComponent } from '../image-upload-dialog/image-upload-dialog.component';
+import { isArray } from 'lodash';
 
 @Component({
   selector: 'app-member',
@@ -218,10 +218,15 @@ export class MemberComponent implements OnInit, OnDestroy {
   }
 
   openDialog() {
-    const dialogRef = this._matDialog.open(ImageCropperDialogComponent);
+    const dialogRef = this._matDialog.open(ImageUploadDialogComponent);
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result:`, result);
+    dialogRef.afterClosed().subscribe(images => {
+      console.log(`Dialog images:`, images);
+      if (isArray(images)) {
+        for (let index = 0; index < images.length; index++) {
+          this.member.images.push(images[index]);
+        }
+      }
     });
   }
 

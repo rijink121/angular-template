@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ImageCropperDialogComponent } from './image-cropper-dialog.component';
+import { ImageUploadDialogComponent } from './image-upload-dialog.component';
 
-describe('ImageCropperDialogComponent', () => {
-  let component: ImageCropperDialogComponent;
-  let fixture: ComponentFixture<ImageCropperDialogComponent>;
+describe('ImageUploadDialogComponent', () => {
+  let component: ImageUploadDialogComponent;
+  let fixture: ComponentFixture<ImageUploadDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ImageCropperDialogComponent ]
+      declarations: [ ImageUploadDialogComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ImageCropperDialogComponent);
+    fixture = TestBed.createComponent(ImageUploadDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
