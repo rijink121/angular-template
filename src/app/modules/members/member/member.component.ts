@@ -221,10 +221,9 @@ export class MemberComponent implements OnInit, OnDestroy {
     const dialogRef = this._matDialog.open(ImageUploadDialogComponent);
 
     dialogRef.afterClosed().subscribe(images => {
-      console.log(`Dialog images:`, images);
       if (isArray(images)) {
         for (let index = 0; index < images.length; index++) {
-          this.member.images.push(images[index]);
+          this.member.images.push({ ...images[index], default: false });
         }
       }
     });

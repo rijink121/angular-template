@@ -90,7 +90,6 @@
       border-radius: 8px;
       background: rgba(0, 0, 0, 0.12);
       transition: box-shadow 150ms ease-in;
-      cursor: pointer;
 
       &.add-new-board:hover, button:hover {
         @include mat-elevation(8);
@@ -99,6 +98,7 @@
       &.add-new-board {
         background: rgba(0, 0, 0, 0.06);
         border: 2px dashed rgba(255, 255, 255, 0.37);
+        cursor: pointer;
       }
 
       .board-name {
